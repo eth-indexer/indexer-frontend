@@ -6,16 +6,16 @@ import {
   ContentWrapper,
   BlocksPanelWrapper,
 } from "./styles";
-import { Block } from "viem";
 
 import SearchInput from "../../components/SearchInput/SearchInput";
 import StateView from "../../components/StateView/StateView";
 import useBlocks from "../../hooks/blocks/useBlocks";
+import { BlockWithNonce } from "../../types/state";
 
 const Scanner: FC = () => {
-  const { blocks, blocksLoading, refetch } = useBlocks();
+  const { blocksWithNonce, blocksLoading, refetch } = useBlocks();
   const [searchValue, setSearchValue] = useState("");
-  const [currentBlock, setCurrentBlock] = useState<Block | null>(null);
+  const [currentBlock, setCurrentBlock] = useState<BlockWithNonce | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -27,19 +27,26 @@ const Scanner: FC = () => {
   }, [refetch]);
 
   const filteredBlocks = useMemo(() => {
-    if (!searchValue) {
-      return blocks;
+    let result = blocksWithNonce;
+
+    if (searchValue) {
+      result = result.filter((blockWithNonce) => {
+        return (
+          blockWithNonce.block.hash?.includes(searchValue.trim()) ||
+          blockWithNonce.block.number?.toString().includes(searchValue.trim())
+        );
+      });
     }
 
-    return blocks.filter((block) => {
-      return (
-        block.hash?.includes(searchValue) ||
-        block.number?.toString().includes(searchValue)
-      );
+    return result.sort((a, b) => {
+      if (a.block.number && b.block.number) {
+        return a.block.number > b.block.number ? -1 : 1;
+      }
+      return 0;
     });
-  }, [blocks, searchValue]);
+  }, [blocksWithNonce, searchValue]);
 
-  const handleBlockChoose = (block: Block) => {
+  const handleBlockChoose = (block: BlockWithNonce) => {
     setCurrentBlock(block);
   };
 
@@ -53,11 +60,11 @@ const Scanner: FC = () => {
         <BlocksPanelWrapper>
           <BlocksTable
             onChoose={(block) => handleBlockChoose(block)}
-            blocks={filteredBlocks}
+            blocksWithNonce={filteredBlocks}
             loading={blocksLoading}
           />
         </BlocksPanelWrapper>
-        <StateView block={currentBlock} />
+        <StateView blockWithNonce={currentBlock} />
       </ContentWrapper>
     </MainLayout>
   );

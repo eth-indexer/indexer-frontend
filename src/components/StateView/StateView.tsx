@@ -1,19 +1,36 @@
 import { FC } from "react";
-import { Block } from "viem";
 import ContentPanel from "../ContentPanel";
-import { EmptyState, StateViewContent } from "./styles";
+import {
+  EmptyState,
+  InfoRow,
+  InfoTitle,
+  InfoValue,
+  OperatorInfo,
+  StateBlockHash,
+  StateViewContent,
+} from "./styles";
 import useStateByBlock from "../../hooks/blocks/useStateByBlock";
+import Spinner from "../Spinner";
+import { BlockWithNonce } from "../../types/state";
 
 interface StateViewProps {
-  block: Block | null;
+  blockWithNonce: BlockWithNonce | null;
 }
 
-const StateView: FC<StateViewProps> = ({ block }) => {
+const StateView: FC<StateViewProps> = ({ blockWithNonce }) => {
   const { state, stateLoading, isError } = useStateByBlock({
-    blockHash: block?.hash?.toString(),
+    blockHash: blockWithNonce?.block?.hash?.toString(),
   });
 
-  const panelTitle = state ? `State of block ${state.block.number}` : "State";
+  const getKeysInfo = (keys: string) => {
+    return keys.slice(2, keys.length).match(/.{1,96}/g)?.length;
+  };
+
+  const parseBigIntFromString = (bigIntString: string) => {
+    return BigInt(bigIntString.slice(0, bigIntString.length - 1));
+  };
+
+  const panelTitle = state ? `State for block ${state.block.number}` : "State";
 
   return (
     <ContentPanel title={panelTitle}>
@@ -22,16 +39,34 @@ const StateView: FC<StateViewProps> = ({ block }) => {
           <EmptyState>Block not found</EmptyState>
         )}
 
-        {stateLoading && !state && <EmptyState>Loading...</EmptyState>}
+        {stateLoading && !state && (
+          <EmptyState>
+            <Spinner /> Loading...
+          </EmptyState>
+        )}
 
         {!isError && !stateLoading && !state && (
           <EmptyState>Choose a block or type it's hash or number</EmptyState>
         )}
 
         {state && (
-          <div>
-            <div>keys data</div>
-          </div>
+          <>
+            <StateBlockHash>Block hash: {state.block.hash}</StateBlockHash>
+            {state.keys.map((keys) => (
+              <OperatorInfo key={keys.operatorId}>
+                <InfoTitle>
+                  Operator id: {Number(parseBigIntFromString(keys.operatorId))}
+                </InfoTitle>
+                <InfoRow>
+                  Keys count: <InfoValue>{getKeysInfo(keys.keys[0])}</InfoValue>
+                </InfoRow>
+                <InfoRow>
+                  Keys used:
+                  <InfoValue>{keys.keys[2].filter(Boolean).length}</InfoValue>
+                </InfoRow>
+              </OperatorInfo>
+            ))}
+          </>
         )}
       </StateViewContent>
     </ContentPanel>

@@ -10,6 +10,9 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 22px;
   font-weight: 600;
   width: 100%;

@@ -1,27 +1,34 @@
 import { FC } from "react";
-import { Block } from "viem";
 import { BlockRowWrapper, EmptyState, Table } from "./styles";
 import BlockRow from "../BlockRow";
 import ContentPanel from "../ContentPanel";
+import { BlockWithNonce } from "../../types/state";
 
 interface BlocksTableProps {
-  blocks: Block[];
+  blocksWithNonce: BlockWithNonce[];
   loading: boolean;
-  onChoose(block: Block): void;
+  onChoose(block: BlockWithNonce): void;
 }
 
-const BlocksTable: FC<BlocksTableProps> = ({ blocks, loading, onChoose }) => {
+const BlocksTable: FC<BlocksTableProps> = ({
+  blocksWithNonce,
+  loading,
+  onChoose,
+}) => {
   return (
-    <ContentPanel title="Latest Blocks">
+    <ContentPanel title="Latest Blocks" loading={loading}>
       <Table>
-        {blocks.map((block) => (
-          <BlockRowWrapper key={block.number} onClick={() => onChoose(block)}>
-            <BlockRow block={block} />
+        {blocksWithNonce.map((blockWithNonce) => (
+          <BlockRowWrapper
+            key={blockWithNonce.block?.number}
+            onClick={() => onChoose(blockWithNonce)}
+          >
+            <BlockRow blockWithNonce={blockWithNonce} />
           </BlockRowWrapper>
         ))}
-
-        {loading && <EmptyState>Blocks are loading...</EmptyState>}
-        {!loading && !blocks.length && <EmptyState>No blocks yet</EmptyState>}
+        {!loading && !blocksWithNonce.length && (
+          <EmptyState>No blocks yet</EmptyState>
+        )}
       </Table>
     </ContentPanel>
   );

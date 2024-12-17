@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { Block } from "viem";
 import {
   BlockHash,
   BlockIcon,
@@ -13,30 +12,39 @@ import {
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Icon32 } from "../Icon";
+import { BlockWithNonce } from "../../types/state";
 dayjs.extend(relativeTime);
 
 interface BlockRowProps {
-  block: Block;
+  blockWithNonce: BlockWithNonce;
 }
 
-const BlockRow: FC<BlockRowProps> = ({ block }) => {
+const BlockRow: FC<BlockRowProps> = ({ blockWithNonce }) => {
+  const timeCreatedFromNow = (timestamp: string) => {
+    return dayjs
+      .unix(Number(BigInt(timestamp.slice(0, timestamp.length - 1))))
+      .fromNow();
+  };
+
   return (
     <Container>
       <BlockIcon>
         <Icon32.BoxClosed />
       </BlockIcon>
       <LeftSide>
-        <BlockNumber>{block.number?.toString()}</BlockNumber>
+        <BlockNumber>{blockWithNonce.block?.number?.toString()}</BlockNumber>
         <BlockTimestamp>
-          {dayjs.unix(Number(block.timestamp)).fromNow()}
+          {timeCreatedFromNow(blockWithNonce.block?.timestamp.toString())}
         </BlockTimestamp>
       </LeftSide>
 
       <RightSide>
         <BlockHash>
-          {block.hash?.slice(0, 8) + "..." + block.hash?.slice(-5)}
+          {blockWithNonce.block?.hash?.slice(0, 8) +
+            "..." +
+            blockWithNonce.block?.hash?.slice(-5)}
         </BlockHash>
-        <KeysNonce>Nonce: 4123</KeysNonce>
+        <KeysNonce>Nonce: {blockWithNonce.nonce}</KeysNonce>
       </RightSide>
     </Container>
   );

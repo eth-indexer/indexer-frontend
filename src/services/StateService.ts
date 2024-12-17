@@ -1,24 +1,23 @@
-import { Block } from "viem";
 import apiClient from "../shared/apiClient";
-import { StateQuery } from "../types/state";
+import { BlockQuery, StateQuery } from "../types/state";
 
 const StateService = {
   async getAllBlocks() {
-    return apiClient<Block[]>({
+    return apiClient<BlockQuery[]>({
       url: `/blocks`,
       method: "GET",
     });
   },
 
   async getBlockByNumber(blockNumber: bigint) {
-    return apiClient<Block[]>({
+    return apiClient<BlockQuery>({
       url: `/blocks?blockNumber${blockNumber}`,
       method: "GET",
     });
   },
 
   async getBlockByHash(blockHash: string) {
-    return apiClient<Block[]>({
+    return apiClient<BlockQuery>({
       url: `/blocks?blockHash=${blockHash}`,
       method: "GET",
     });

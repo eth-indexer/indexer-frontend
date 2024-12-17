@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import StateService from "../../services/StateService";
+import { BlockWithNonce } from "../../types/state";
 
 const useBlocks = () => {
   const query = useQuery({
@@ -8,9 +9,18 @@ const useBlocks = () => {
       return StateService.getAllBlocks();
     },
   });
-
   return {
-    blocks: query.isSuccess ? query.data.data : [],
+    blocksWithNonce: query.isSuccess
+      ? query.data.data.map(
+          (blockWithNonce) =>
+            ({
+              block: blockWithNonce.block
+                ? JSON.parse(blockWithNonce.block)
+                : null,
+              nonce: blockWithNonce.nonce,
+            } as BlockWithNonce)
+        )
+      : [],
     blocksLoading: query.isLoading,
     refetch: query.refetch,
   };

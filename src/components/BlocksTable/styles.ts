@@ -10,7 +10,9 @@ export const BlockRowWrapper = styled.div`
   }
 `;
 
-export const Table = styled.div``;
+export const Table = styled.div`
+  width: 100%;
+`;
 
 export const EmptyState = styled.div`
   text-align: center;

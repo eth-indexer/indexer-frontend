@@ -23,7 +23,7 @@ const BlockRow: FC<BlockRowProps> = ({ block }) => {
   return (
     <Container>
       <BlockIcon>
-        <Icon32.BoxOpen />
+        <Icon32.BoxClosed />
       </BlockIcon>
       <LeftSide>
         <BlockNumber>{block.number?.toString()}</BlockNumber>

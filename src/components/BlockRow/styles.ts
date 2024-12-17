@@ -6,17 +6,12 @@ export const Container = styled.div`
   border-radius: 4px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #f2f2f2;
-
-  &:last-child {
-    border-bottom: none;
-  }
 `;
 
 export const BlockIcon = styled.div`
   width: 48px;
   height: 48px;
-  background-color: #f2f2f2;
+  background-color: #191c18;
   border-radius: 4px;
   margin-right: 10px;
   display: flex;
@@ -34,7 +29,7 @@ export const LeftSide = styled.div`
 export const BlockNumber = styled.div`
   font-size: 16px;
   font-weight: 600;
-  color: #41b3ff;
+  color: #008f11;
 `;
 
 export const BlockTimestamp = styled.div`
@@ -49,11 +44,12 @@ export const RightSide = styled.div`
 `;
 
 export const BlockHash = styled.div`
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
+  color: #00670c;
 `;
 
 export const KeysNonce = styled.div`
-  font-size: 14px;
-  color: "#6c757d";
+  font-size: 12px;
+  color: #6c757d;
 `;

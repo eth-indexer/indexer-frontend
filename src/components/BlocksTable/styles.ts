@@ -4,9 +4,14 @@ export const BlockRowWrapper = styled.div`
   padding: 10px;
   width: 100%;
   cursor: pointer;
+  border-bottom: 1px solid rgba(14, 16, 13, 0.5);
+
+  &:last-child {
+    border-bottom: none;
+  }
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.02);
+    background-color: rgba(0, 143, 17, 0.05);
   }
 `;
 

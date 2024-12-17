@@ -11,7 +11,7 @@ export const Container = styled.div`
 
 export const MainLogo = styled.div`
   font-family: "VT323", monospace;
-  color: #ffffff;
+  color: #008f11;
   font-weight: 400;
   font-style: normal;
   font-size: 120px;

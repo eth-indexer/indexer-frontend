@@ -11,7 +11,14 @@ export const StyledInput = styled.input<{
     ${({ redBorder }) => (redBorder ? "rgba(234, 67, 53, 1)" : "#d7d3dc")};
   border-radius: 4px;
   width: 100%;
-  font-weight: 500;
+  font-weight: 600;
+  color: #008f11;
+  font-family: "VT323";
+
+  &::placeholder {
+    color: rgba(0, 143, 17, 0.8);
+  }
+
   ${({ smallSize }) =>
     smallSize
       ? `
@@ -20,7 +27,7 @@ export const StyledInput = styled.input<{
     padding: 8px;
   `
       : `
-    font-size: 16px;
+    font-size: 20px;
     line-height: 20px;
   `}
 

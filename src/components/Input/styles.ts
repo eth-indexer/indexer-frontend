@@ -6,17 +6,17 @@ export const StyledInput = styled.input<{
   smallSize?: boolean;
   redBorder?: boolean;
 }>`
-  padding: 8px 12px;
-  border: 1px solid
-    ${({ redBorder }) => (redBorder ? "rgba(234, 67, 53, 1)" : "#d7d3dc")};
   border-radius: 4px;
   width: 100%;
   font-weight: 600;
   color: #008f11;
   font-family: "VT323";
+  border: none;
+  background-color: transparent;
+  padding: 0;
 
   &::placeholder {
-    color: rgba(0, 143, 17, 0.8);
+    color: rgba(0, 143, 17, 1);
   }
 
   ${({ smallSize }) =>
@@ -32,14 +32,6 @@ export const StyledInput = styled.input<{
   `}
 
   outline: none;
-
-  ${({ inputType }) =>
-    inputType === "ghost" &&
-    `
-    border: none;
-    background-color: transparent;
-    padding: 0;
-  `}
 `;
 
 export const StyledTextarea = styled.textarea<{

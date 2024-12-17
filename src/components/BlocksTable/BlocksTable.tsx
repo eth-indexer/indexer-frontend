@@ -6,19 +6,22 @@ import ContentPanel from "../ContentPanel";
 
 interface BlocksTableProps {
   blocks: Block[];
+  loading: boolean;
+  onChoose(block: Block): void;
 }
 
-const BlocksTable: FC<BlocksTableProps> = ({ blocks }) => {
+const BlocksTable: FC<BlocksTableProps> = ({ blocks, loading, onChoose }) => {
   return (
     <ContentPanel title="Latest Blocks">
       <Table>
         {blocks.map((block) => (
-          <BlockRowWrapper>
-            <BlockRow key={block.hash} block={block} />
+          <BlockRowWrapper key={block.number} onClick={() => onChoose(block)}>
+            <BlockRow block={block} />
           </BlockRowWrapper>
         ))}
 
-        {blocks.length === 0 && <EmptyState>Blocks are loading...</EmptyState>}
+        {loading && <EmptyState>Blocks are loading...</EmptyState>}
+        {!loading && !blocks.length && <EmptyState>No blocks yet</EmptyState>}
       </Table>
     </ContentPanel>
   );

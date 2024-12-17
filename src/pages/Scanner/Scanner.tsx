@@ -8,36 +8,23 @@ import {
 } from "./styles";
 import { Block } from "viem";
 
-import { createPublicClient, http } from "viem";
-import { holesky } from "viem/chains";
 import SearchInput from "../../components/SearchInput/SearchInput";
 import StateView from "../../components/StateView/StateView";
-
-export const publicClient = createPublicClient({
-  chain: holesky,
-  transport: http(
-    "http://hr6vb81d1ndsx-rpc-5-holesky-geth.tooling-nodes.testnet.fi"
-  ),
-});
+import useBlocks from "../../hooks/blocks/useBlocks";
 
 const Scanner: FC = () => {
-  const [blocks, setBlocks] = useState<Block[]>([]);
+  const { blocks, blocksLoading, refetch } = useBlocks();
   const [searchValue, setSearchValue] = useState("");
+  const [currentBlock, setCurrentBlock] = useState<Block | null>(null);
 
   useEffect(() => {
-    publicClient.getBlock().then((block) => {
-      setBlocks([
-        block,
-        { ...block, number: block.number + 1n },
-        { ...block, number: block.number + 2n },
-        { ...block, number: block.number + 3n },
-        { ...block, number: block.number + 4n },
-        { ...block, number: block.number + 5n },
-        { ...block, number: block.number + 6n },
-        { ...block, number: block.number + 7n },
-      ]);
-    });
-  }, []);
+    const interval = setInterval(() => {
+      refetch();
+    }, 2000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [refetch]);
 
   const filteredBlocks = useMemo(() => {
     if (!searchValue) {
@@ -52,6 +39,10 @@ const Scanner: FC = () => {
     });
   }, [blocks, searchValue]);
 
+  const handleBlockChoose = (block: Block) => {
+    setCurrentBlock(block);
+  };
+
   return (
     <MainLayout>
       <SearchInputWraper>
@@ -60,9 +51,13 @@ const Scanner: FC = () => {
 
       <ContentWrapper>
         <BlocksPanelWrapper>
-          <BlocksTable blocks={filteredBlocks} />
+          <BlocksTable
+            onChoose={(block) => handleBlockChoose(block)}
+            blocks={filteredBlocks}
+            loading={blocksLoading}
+          />
         </BlocksPanelWrapper>
-        <StateView />
+        <StateView block={currentBlock} />
       </ContentWrapper>
     </MainLayout>
   );

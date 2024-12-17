@@ -25,7 +25,6 @@ const SearchInput: FC<SearchInputProps> = ({
       </SearchIcon>
       <Input
         placeholder={placeholder || "Block number or hash"}
-        inputType="ghost"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         autoFocus={autofocus}

@@ -17,7 +17,9 @@ const BlocksTable: FC<BlocksTableProps> = ({
 }) => {
   return (
     <ContentPanel
-      title={`Latest Blocks ${blocksWithNonce.length}`}
+      title={`Latest Blocks ${
+        blocksWithNonce.length ? blocksWithNonce.length : ""
+      }`}
       loading={loading}
     >
       <Table>

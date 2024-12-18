@@ -23,7 +23,7 @@ const StateView: FC<StateViewProps> = ({ blockWithNonce }) => {
   });
 
   const getKeysInfo = (keys: string) => {
-    return keys.replace(/0x/g, "").match(/.{1,96}/g)?.length;
+    return keys?.replace(/0x/g, "").match(/.{1,96}/g)?.length || 0;
   };
 
   const parseBigIntFromString = (bigIntString: string) => {
@@ -62,7 +62,7 @@ const StateView: FC<StateViewProps> = ({ blockWithNonce }) => {
                 </InfoRow>
                 <InfoRow>
                   Keys used:
-                  <InfoValue>{keys.keys[2].filter(Boolean).length}</InfoValue>
+                  <InfoValue>{keys.keys[2]?.filter(Boolean).length}</InfoValue>
                 </InfoRow>
               </OperatorInfo>
             ))}

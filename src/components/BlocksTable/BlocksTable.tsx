@@ -16,7 +16,10 @@ const BlocksTable: FC<BlocksTableProps> = ({
   onChoose,
 }) => {
   return (
-    <ContentPanel title="Latest Blocks" loading={loading}>
+    <ContentPanel
+      title={`Latest Blocks ${blocksWithNonce.length}`}
+      loading={loading}
+    >
       <Table>
         {blocksWithNonce.map((blockWithNonce) => (
           <BlockRowWrapper

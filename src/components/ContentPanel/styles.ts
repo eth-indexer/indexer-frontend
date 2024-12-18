@@ -17,7 +17,7 @@ export const Title = styled.div`
   font-weight: 600;
   width: 100%;
   background-color: #191c18;
-  border-bottom: 1px solid #0e100d;
+  border-bottom: 1px solid #191c18;
   color: #008f11;
   padding: 10px;
   font-family: "VT323", monospace;

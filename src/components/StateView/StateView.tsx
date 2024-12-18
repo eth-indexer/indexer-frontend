@@ -23,7 +23,7 @@ const StateView: FC<StateViewProps> = ({ blockWithNonce }) => {
   });
 
   const getKeysInfo = (keys: string) => {
-    return keys.slice(2, keys.length).match(/.{1,96}/g)?.length;
+    return keys.replace(/0x/g, "").match(/.{1,96}/g)?.length;
   };
 
   const parseBigIntFromString = (bigIntString: string) => {
